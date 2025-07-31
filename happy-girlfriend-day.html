@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Girlfriend Day 💖</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fad0c4);
+      background-size: 600% 600%;
+      animation: backgroundMove 15s ease infinite;
+      overflow-x: hidden;
+      text-align: center;
+      padding: 2rem;
+      color: #fff;
+    }
+
+    @keyframes backgroundMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .title {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .typing-text {
+      font-size: 1.2rem;
+      white-space: pre-line;
+      border-right: 2px solid #fff;
+      width: fit-content;
+      margin: 0 auto 1.5rem;
+      overflow: hidden;
+    }
+
+    .big-heart {
+      font-size: 4rem;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .love-button {
+      background-color: #fff;
+      color: #e91e63;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      margin: 0.5rem;
+      transition: 0.3s;
+    }
+
+    .love-button:hover {
+      background-color: #ffe3ec;
+    }
+
+    .plushie {
+      display: none;
+      width: 200px;
+      margin: 2rem auto 1rem;
+      animation: fadeIn 1.5s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .love-note {
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    .music-info {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      opacity: 0.8;
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .question-area {
+      margin-top: 2rem;
+    }
+
+    .answer-buttons {
+      margin-top: 1rem;
+      position: relative;
+    }
+
+    .love-question {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-yes, .btn-no {
+      background-color: #fff;
+      color: #e91e63;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 0.3rem;
+      position: relative;
+      transition: 0.3s ease;
+    }
+
+    .btn-yes:hover {
+      background-color: #ffe3ec;
+    }
+
+    @media (max-width: 768px) {
+      .title { font-size: 2.2rem; }
+      .typing-text { font-size: 1rem; }
+      .big-heart { font-size: 3rem; }
+      .love-button, .btn-yes, .btn-no { font-size: 0.95rem; padding: 0.6rem 1.2rem; }
+      .love-note, .love-question { font-size: 0.95rem; }
+      .music-info { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="title">Happy Girlfriend Day 💕</h1>
+  <div class="typing-text" id="typing-text"></div>
+  <div class="big-heart">❤️</div>
+
+  <button class="love-button" onclick="playMusic()">Putar Lagu</button>
+  <button class="love-button" onclick="hugPlushie()">Peluk Boneka</button>
+
+  <audio id="bg-music" src="oneonly.mp3" preload="auto"></audio>
+
+  <div id="plushie-container">
+    <img src="plushie.png" class="plushie" id="plushie" alt="Plushie">
+  </div>
+
+  <div class="love-note" id="love-note"></div>
+
+  <div class="question-area">
+    <div class="love-question">Kamu sayang aku ga? 😳</div>
+    <div class="answer-buttons">
+      <button class="btn-yes" onclick="jawabSayang()">Sayang 💖</button>
+      <button class="btn-no" id="noBtn" onmouseover="hindari(this)">Enggak 😶</button>
+    </div>
+    <div id="jawaban-sayang" style="margin-top:1rem;"></div>
+  </div>
+
+  <div class="music-info">Lagu: "One Only" – Pamungkas 🎶</div>
+
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <script>
+    const message = "Terima kasih sudah menjadi bagian terindah dalam hidupku.\nKamu satu-satunya yang aku sayang, sekarang dan selamanya. 💖";
+    let i = 0;
+    function typeText() {
+      if (i < message.length) {
+        document.getElementById("typing-text").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeText, 50);
+      }
+    }
+    typeText();
+
+    function playMusic() {
+      const music = document.getElementById("bg-music");
+      music.play();
+    }
+
+    function hugPlushie() {
+      const plushie = document.getElementById("plushie");
+      plushie.style.display = "block";
+      document.getElementById("love-note").innerText = "Peluk hangat dariku untukmu 🤗❤️";
+      showConfetti();
+    }
+
+    // Jawaban sayang
+    function jawabSayang() {
+      document.getElementById("jawaban-sayang").innerText = "Awww aku juga sayang kamu! 😘❤️";
+      showConfetti();
+    }
+
+    // Hindari tombol "Tidak"
+    function hindari(btn) {
+      const parent = btn.parentElement;
+      const maxX = parent.offsetWidth - btn.offsetWidth;
+      const maxY = parent.offsetHeight - btn.offsetHeight;
+
+      const randX = Math.floor(Math.random() * maxX);
+      const randY = Math.floor(Math.random() * maxY);
+
+      btn.style.position = "absolute";
+      btn.style.left = randX + "px";
+      btn.style.top = randY + "px";
+    }
+
+    // Confetti
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    let pieces = [], number = 80;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function showConfetti() {
+      resizeCanvas();
+      pieces = [];
+      for (let i = 0; i < number; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * number,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+          tilt: Math.floor(Math.random() * 10) - 10,
+        });
+      }
+      animateConfetti();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach((p, i) => {
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+        ctx.fill();
+        p.y += 2;
+        p.x += Math.sin(i) * 1;
+        if (p.y > canvas.height) p.y = -10;
+      });
+    }
+
+    function animateConfetti() {
+      draw();
+      requestAnimationFrame(animateConfetti);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+  </script>
+</body>
+</html>
