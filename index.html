@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Happy Girlfriend Day 💖</title>
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -127,6 +129,39 @@
       background-color: #ffe3ec;
     }
 
+    #opening {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #ffbfd4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fff;
+      animation: fadeOut 3s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    #main-content {
+      display: none;
+      animation: fadeInMain 1s ease forwards;
+    }
+
+    @keyframes fadeInMain {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
     @media (max-width: 768px) {
       .title { font-size: 2.2rem; }
       .typing-text { font-size: 1rem; }
@@ -138,35 +173,51 @@
   </style>
 </head>
 <body>
-  <h1 class="title">Happy Girlfriend Day 💕</h1>
-  <div class="typing-text" id="typing-text"></div>
-  <div class="big-heart">❤️</div>
+  <!-- Opening -->
+  <div id="opening">Selamat Hari Pacar Nasional 💕</div>
 
-  <button class="love-button" id="musicButton" onclick="toggleMusic()">Putar Lagu</button>
-  <button class="love-button" onclick="hugPlushie()">Peluk Boneka</button>
+  <!-- Main content -->
+  <div id="main-content">
+    <h1 class="title">Happy Girlfriend Day 💕</h1>
+    <div class="typing-text" id="typing-text"></div>
+    <div class="big-heart">❤️</div>
 
-  <audio id="bg-music" src="oneonly.mp3" preload="auto"></audio>
+    <button class="love-button" onclick="toggleMusic()">🎵 Putar / Jeda Lagu</button>
+    <button class="love-button" onclick="hugPlushie()">Peluk Boneka</button>
 
-  <div id="plushie-container">
-    <img src="plushie.png" class="plushie" id="plushie" alt="Plushie">
-  </div>
+    <audio id="bg-music" src="oneonly.mp3" preload="auto"></audio>
 
-  <div class="love-note" id="love-note"></div>
-
-  <div class="question-area">
-    <div class="love-question">Kamu sayang aku ga? 😳</div>
-    <div class="answer-buttons">
-      <button class="btn-yes" onclick="jawabSayang()">Sayang 💖</button>
-      <button class="btn-no" id="noBtn" onmouseover="hindari(this)">Enggak 😶</button>
+    <div id="plushie-container">
+      <img src="plushie.png" class="plushie" id="plushie" alt="Plushie">
     </div>
-    <div id="jawaban-sayang" style="margin-top:1rem;"></div>
-  </div>
 
-  <div class="music-info">Lagu: "One Only" – Pamungkas 🎶</div>
+    <div class="love-note" id="love-note"></div>
+
+    <div class="question-area">
+      <div class="love-question">Kamu sayang aku ga? 😳</div>
+      <div class="answer-buttons">
+        <button class="btn-yes" onclick="jawabSayang()">Sayang 💖</button>
+        <button class="btn-no" id="noBtn" onmouseover="hindari(this)">Enggak 😶</button>
+      </div>
+      <div id="jawaban-sayang" style="margin-top:1rem;"></div>
+    </div>
+
+    <div class="music-info">Lagu: "One Only" – Pamungkas 🎶</div>
+  </div>
 
   <canvas class="confetti" id="confetti"></canvas>
 
   <script>
+    // Opening delay
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById("opening").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        typeText();
+      }, 3000);
+    };
+
+    // Typing text
     const message = "Terima kasih sudah menjadi bagian terindah dalam hidupku.\nKamu satu-satunya yang aku sayang, sekarang dan selamanya. 💖";
     let i = 0;
     function typeText() {
@@ -176,21 +227,14 @@
         setTimeout(typeText, 50);
       }
     }
-    typeText();
 
-    // Toggle music
-    let isPlaying = false;
     function toggleMusic() {
       const music = document.getElementById("bg-music");
-      const btn = document.getElementById("musicButton");
-      if (isPlaying) {
-        music.pause();
-        btn.innerText = "Putar Lagu";
-      } else {
+      if (music.paused) {
         music.play();
-        btn.innerText = "Pause Lagu";
+      } else {
+        music.pause();
       }
-      isPlaying = !isPlaying;
     }
 
     function hugPlushie() {
@@ -218,6 +262,7 @@
       btn.style.top = randY + "px";
     }
 
+    // Confetti
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
     let pieces = [], number = 80;
